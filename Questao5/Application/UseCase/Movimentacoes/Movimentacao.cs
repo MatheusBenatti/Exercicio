@@ -1,4 +1,5 @@
-﻿using Questao5.Application.UseCase.Movimentacoes.InputModel;
+﻿using Questao5.Application.UseCase.Interfaces;
+using Questao5.Application.UseCase.Movimentacoes.InputModel;
 using Questao5.Application.UseCase.Movimentacoes.ViewModel;
 using Questao5.Domain.Entities;
 using Questao5.Domain.Repository;
@@ -6,7 +7,7 @@ using System.Net;
 
 namespace Questao5.Application.UseCase.Movimentacoes
 {
-    public class Movimentacao
+    public class Movimentacao : IMovimentacao
     {
         private readonly IContaCorrenteRepository _contaCorrenteRepository;
         private readonly IMovimentoRepository _movimentoRepository;
@@ -34,24 +35,24 @@ namespace Questao5.Application.UseCase.Movimentacoes
             }
 
             var conta = await _contaCorrenteRepository.GetByIdAsync(requestInput.IdContaCorrente)
-                ?? throw new Exception("Conta corrente não cadastrada.") 
+                ?? throw new Exception("Conta corrente não cadastrada.")
                 { HResult = (int)HttpStatusCode.BadRequest, Data = { { "Tipo", "INVALID_ACCOUNT" } } };
 
             if (conta.Ativo == 1)
             {
-                throw new Exception("Conta corrente inativa.") 
+                throw new Exception("Conta corrente inativa.")
                 { HResult = (int)HttpStatusCode.BadRequest, Data = { { "Tipo", "INACTIVE_ACCOUNT" } } };
             }
 
             if (requestInput.Valor <= 0)
             {
-                throw new Exception("Valor inválido.") 
+                throw new Exception("Valor inválido.")
                 { HResult = (int)HttpStatusCode.BadRequest, Data = { { "Tipo", "INVALID_VALUE" } } };
             }
 
             if (requestInput.TipoMovimento != "C" && requestInput.TipoMovimento != "D")
             {
-                throw new Exception("Tipo de movimento inválido.") 
+                throw new Exception("Tipo de movimento inválido.")
                 { HResult = (int)HttpStatusCode.BadRequest, Data = { { "Tipo", "INVALID_TYPE" } } };
             }
 

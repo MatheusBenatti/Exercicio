@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Questao5.Application.UseCase.Saldos;
+using Questao5.Application.UseCase.Interfaces;
 using Questao5.Application.UseCase.Saldos.InputModel;
 using Questao5.Infrastructure.Services.ApiModel;
 
@@ -9,11 +9,11 @@ namespace Questao5.Infrastructure.Services.Controllers
     [Route("api/[controller]")]
     public class SaldoController : ControllerBase
     {
-        private readonly Saldo _saldo;
+        private readonly ISaldo _saldoUseCase;
 
-        public SaldoController(Saldo saldo)
+        public SaldoController(ISaldo saldoUseCase)
         {
-            _saldo = saldo;
+            _saldoUseCase = saldoUseCase;
         }
 
         [HttpGet("consultar")]
@@ -26,7 +26,7 @@ namespace Questao5.Infrastructure.Services.Controllers
 
             try
             {
-                var saldoResponse = await _saldo.ConsultarSaldoAsync(saldo);
+                var saldoResponse = await _saldoUseCase.ConsultarSaldoAsync(saldo);
                 return Ok(saldoResponse);
             }
             catch (Exception ex)

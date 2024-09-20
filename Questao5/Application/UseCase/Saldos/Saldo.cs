@@ -1,11 +1,12 @@
-﻿using Questao5.Application.UseCase.Saldos.InputModel;
+﻿using Questao5.Application.UseCase.Interfaces;
+using Questao5.Application.UseCase.Saldos.InputModel;
 using Questao5.Application.UseCase.Saldos.ViewModel;
 using Questao5.Domain.Repository;
 using System.Net;
 
 namespace Questao5.Application.UseCase.Saldos
 {
-    public class Saldo
+    public class Saldo: ISaldo
     {
         private readonly IContaCorrenteRepository _contaCorrenteRepository;
         private readonly IMovimentoRepository _movimentoRepository;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Questao5.Application.UseCase.Movimentacoes;
+using Questao5.Application.UseCase.Interfaces;
 using Questao5.Application.UseCase.Movimentacoes.InputModel;
 using Questao5.Infrastructure.Services.ApiModel;
 
@@ -9,11 +9,11 @@ namespace Questao5.Infrastructure.Services.Controllers
     [Route("api/[controller]")]
     public class MovimentacaoController : ControllerBase
     {
-        private readonly Movimentacao _movimentacaoService;
+        private readonly IMovimentacao _movimentacaoUseCase;
 
-        public MovimentacaoController(Movimentacao movimentacaoService)
+        public MovimentacaoController(IMovimentacao movimentacaoUseCase)
         {
-            _movimentacaoService = movimentacaoService;
+            _movimentacaoUseCase = movimentacaoUseCase;
         }
 
         [HttpPost("movimentar")]
@@ -28,7 +28,7 @@ namespace Questao5.Infrastructure.Services.Controllers
             };
             try
             {
-                var response = await _movimentacaoService.MovimentarContaAsync(requestInput);
+                var response = await _movimentacaoUseCase.MovimentarContaAsync(requestInput);
                 return Ok(response);
             }
             catch (Exception ex)
