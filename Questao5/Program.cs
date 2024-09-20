@@ -1,4 +1,8 @@
 using MediatR;
+using Questao5.Application.UseCase.Movimentacoes;
+using Questao5.Application.UseCase.Saldos;
+using Questao5.Domain.Repository;
+using Questao5.Infrastructure.Database.Repositories;
 using Questao5.Infrastructure.Sqlite;
 using System.Reflection;
 
@@ -6,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<IContaCorrenteRepository, ContaCorrenteRepository>();
+builder.Services.AddScoped<IMovimentoRepository, MovimentoRepository>();
+builder.Services.AddScoped<IIdempotenciaRepository, IdempotenciaRepository>();
+builder.Services.AddScoped<Movimentacao>();
+builder.Services.AddScoped<Saldo>();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 // sqlite
